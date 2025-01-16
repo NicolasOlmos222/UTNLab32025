@@ -6,7 +6,6 @@
         <p>No tienes movimientos registrados.</p>
       </div>
   
-      <!-- Mostrar el análisis de inversiones -->
       <div class="investment-analysis">
         <h3>Análisis de Inversiones</h3>
         <table>
@@ -27,7 +26,6 @@
         </table>
       </div>
   
-      <!-- Mostrar el dinero total -->
       <div v-if="totalMoney !== null" class="total-money">
         <p><strong>Total en ARS:</strong> {{ totalMoney }} ARS</p>
       </div>
@@ -62,7 +60,6 @@
   </template>
   
   <script>
-  // Importa el cliente de la API
   import apiClient from "../api/apiClient";
   
   export default {
@@ -70,8 +67,8 @@
     data() {
       return {
         movements: [],
-        userId: this.$root.userId, // Obtener el ID del usuario desde la aplicación principal
-        investmentAnalysis: {}, // Almacenará los resultados de las inversiones
+        userId: this.$root.userId, 
+        investmentAnalysis: {}, 
       };
     },
     computed: {
@@ -79,12 +76,12 @@
         if (this.movements.length === 0) return null;
         return this.movements.reduce((total, movement) => {
           if (movement.action === 'purchase') {
-            return total - parseFloat(movement.money); // Resta si es una compra
+            return total - parseFloat(movement.money); 
           } else if (movement.action === 'sale') {
-            return total + parseFloat(movement.money); // Suma si es una venta
+            return total + parseFloat(movement.money);
           }
           return total;
-        }, 0).toFixed(2); // Devolvemos el total con dos decimales
+        }, 0).toFixed(2); 
       }
     },
     mounted() {
@@ -104,11 +101,9 @@
       async calculateInvestmentResults() {
         let investmentResults = {};
   
-        // Filtramos por criptomonedas
         const cryptos = Array.from(new Set(this.movements.map(m => m.crypto_code)));
   
         for (const crypto of cryptos) {
-          // Obtenemos las transacciones de compra y venta para la criptomoneda actual
           const purchases = this.movements.filter(m => m.crypto_code === crypto && m.action === 'purchase');
           const sales = this.movements.filter(m => m.crypto_code === crypto && m.action === 'sale');
   
@@ -119,10 +114,8 @@
             totalPurchaseMoney += parseFloat(purchase.money);
           });
   
-          // Obtener el precio actual de la criptomoneda
           const currentPrice = await this.getCurrentCryptoPrice(crypto);
   
-          // Calcular el valor actual de las compras
           const currentValue = currentPrice * totalPurchaseAmount;
           const result = currentValue - totalPurchaseMoney;
           
@@ -136,10 +129,10 @@
         try {
           const response = await fetch(`https://criptoya.com/api/binance/${crypto}/ARS/0.1`);
           const data = await response.json();
-          return data.bid; // Precio de compra (Bid)
+          return data.bid; 
         } catch (error) {
           console.error("Error al obtener el precio actual de la criptomoneda:", error);
-          return 0; // Retornamos 0 en caso de error
+          return 0; 
         }
       },
   
@@ -160,7 +153,7 @@
       async editMovement(id) {
         try {
           const response = await apiClient.get(`transactions/${id}`);
-          this.movementToEdit = response.data; // Almacenar el movimiento en el formulario de edición
+          this.movementToEdit = response.data; 
         } catch (error) {
           console.error("Error al obtener el movimiento para editar:", error);
         }
@@ -170,11 +163,11 @@
         if (this.movementToEdit) {
           try {
             const updatedMovement = {
-              money: this.movementToEdit.money, // Aquí debes obtener los valores actualizados de tu formulario
+              money: this.movementToEdit.money, 
             };
             await apiClient.patch(`transactions/${this.movementToEdit._id}`, updatedMovement);
             alert("Movimiento actualizado con éxito.");
-            this.fetchMovements(); // Vuelve a cargar los movimientos
+            this.fetchMovements(); 
           } catch (error) {
             console.error("Error al actualizar el movimiento:", error);
           }
@@ -185,7 +178,6 @@
         const confirmDelete = confirm("¿Estás seguro de que deseas eliminar este movimiento?");
         if (confirmDelete) {
           try {
-            // Usamos el apiClient para eliminar el movimiento
             await apiClient.delete(`transactions/${id}`);
             this.movements = this.movements.filter((movement) => movement._id !== id);
             alert("Movimiento eliminado exitosamente.");

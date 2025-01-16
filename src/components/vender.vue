@@ -57,7 +57,7 @@
         cryptoPrice: null,
         sellableAmount: 0,
         successMessage: null,
-        userId: this.$root.userId, // Obtener el ID del usuario desde la aplicación principal
+        userId: this.$root.userId, 
       };
     },
     watch: {
@@ -86,18 +86,16 @@
   
       calculateSellableAmount() {
         if (this.cryptoPrice && this.saleMoney > 0) {
-          this.sellableAmount = (this.saleMoney / this.cryptoPrice).toFixed(6); // Limitar a 6 decimales
+          this.sellableAmount = (this.saleMoney / this.cryptoPrice).toFixed(6); 
         }
       },
   
       async handleSale() {
-        // Validar que el monto sea mayor a 0
         if (this.saleMoney <= 0 || this.sellableAmount <= 0) {
           this.successMessage = "El monto debe ser mayor a 0 y suficiente para vender la criptomoneda.";
           return;
         }
   
-        // Obtener la fecha actual
         const now = new Date();
         const formattedDate = `${now.getDate().toString().padStart(2, '0')}-${(
           now.getMonth() + 1
@@ -108,7 +106,6 @@
           .toString()
           .padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
   
-        // Crear el objeto con los datos de la venta
         const saleData = {
           user_id: this.userId,
           action: "sale",
@@ -119,7 +116,6 @@
         };
   
         try {
-          // Enviar la solicitud POST a la API
           const response = await axios.post(
             'https://laboratorio3-f36a.restdb.io/rest/transactions',
             saleData,
@@ -132,7 +128,6 @@
           this.successMessage = `¡Venta realizada exitosamente! Cantidad: ${this.sellableAmount} ${this.selectedCurrency}`;
           console.log('Venta registrada:', response.data);
   
-          // Reiniciar el formulario después de la venta
           this.saleMoney = 0;
           this.sellableAmount = 0;
         } catch (error) {
@@ -142,7 +137,7 @@
       },
     },
     mounted() {
-      this.fetchCryptoPrice(); // Al montar el componente, obtener el precio de la criptomoneda por defecto (BTC)
+      this.fetchCryptoPrice(); 
     },
   };
   </script>

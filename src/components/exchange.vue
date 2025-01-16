@@ -4,7 +4,6 @@
       <p><strong>Fiat:</strong> ARS</p>
       <p><strong>Volumen:</strong> 0.1</p>
   
-      <!-- Selector de moneda -->
       <label for="currency-select"><strong>Seleccione la moneda:</strong></label>
       <select id="currency-select" v-model="selectedCoin" @change="fetchData">
         <option value="BTC">BTC</option>
@@ -12,7 +11,6 @@
         <option value="USDT">USDT</option>
       </select>
   
-      <!-- Muestra los datos de la API -->
       <div v-if="data">
         <p><strong>Moneda:</strong> {{ selectedCoin }}</p>
         <p><strong>Precio Ask:</strong> {{ data.ask }}</p>
@@ -33,15 +31,15 @@
     name: "ExchangeInfo",
     data() {
       return {
-        selectedCoin: "BTC", // Moneda seleccionada
-        data: null, // Datos obtenidos de la API
+        selectedCoin: "BTC", 
+        data: null, 
       };
     },
     computed: {
       formattedTime() {
         if (!this.data) return "";
-        const date = new Date(this.data.time * 1000); // Convierte el timestamp
-        return date.toLocaleString(); // Formato legible para la fecha
+        const date = new Date(this.data.time * 1000); 
+        return date.toLocaleString(); 
       },
     },
     methods: {
@@ -58,7 +56,7 @@
       },
     },
     mounted() {
-      this.fetchData(); // Carga inicial con la moneda predeterminada
+      this.fetchData(); 
     },
   };
   </script>

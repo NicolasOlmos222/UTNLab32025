@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    userId: null, // Almacena el ID del usuario
+    userId: null,
   }),
   actions: {
     setUserId(id) {

@@ -9,13 +9,12 @@
 export default {
   data() {
     return {
-      id: "", // Almacenar el ID ingresado
+      id: "",
     };
   },
   methods: {
     iniciarSesion() {
       if (this.id) {
-        // Emite el ID al componente principal para que lo guarde
         this.$emit('sesionIniciada', this.id);
       } else {
         alert("Por favor, ingrese un ID válido.");

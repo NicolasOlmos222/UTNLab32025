@@ -17,11 +17,9 @@
     </ul>
   </header>
   <main>
-    <!-- Mostrar mensaje de bienvenida si está autenticado -->
     <div v-if="autenticado">
       <h4>Bienvenido {{ userId }}</h4>
     </div>
-    <!-- Mostrar el componente correspondiente -->
     <component :is="dataComponente" @sesionIniciada="handleSesionIniciada"></component>
   </main>
 </template>
@@ -40,9 +38,9 @@ export default {
       cuenta: verCuenta,
       compra: comprar,
       venta: vender,
-      dataComponente: null,  // Iniciar con el componente de login
-      autenticado: false,  // Estado de autenticación
-      userId: localStorage.getItem('userId') || null, // Leer el id desde localStorage
+      dataComponente: null, 
+      autenticado: false,
+      userId: localStorage.getItem('userId') || null,
     };
   },
   components: {
@@ -56,12 +54,10 @@ export default {
       this.dataComponente = componente;
     },
     handleSesionIniciada(id) {
-      // Cambia el estado de autenticado y guarda el id
       this.autenticado = true;
-      this.userId = id; // Guarda el id
-      localStorage.setItem('userId', id); // Guarda el id en localStorage
-      this.dataComponente = this.cuenta; // Mostrar "Ver Cuenta" o el componente adecuado
-    },
+      this.userId = id; 
+      localStorage.setItem('userId', id); 
+      this.dataComponente = this.cuenta; },
   },
 };
 </script>
